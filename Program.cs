@@ -60,11 +60,14 @@ namespace ConsoleSnake
 
             public static void Render()
             {
+                Paint.SetPixel(prevPos, ConsoleColor.Black);
                 Paint.SetPixel(position, ConsoleColor.Green);
             }
 
             public static void Move()
             {
+                prevPos.x = position.x;
+                prevPos.y = position.y;
                 position.x += dirrection.x;
                 position.y += dirrection.y;
             }
