@@ -16,12 +16,14 @@ namespace ConsoleSnake
         {
             Thread inputThread = new Thread(Input);
             inputThread.Start();
+            Paint.WriteText(new Position(0, 0), "Snake");
 
             while (work)
             {
                 Snake.Move();
                 Snake.Render();
                 Snake.CollisionCheck();
+                Paint.WriteText(new Position(0, 1), "Score=" + Snake.tail.Count);
                 Thread.Sleep(500);
             }
 
@@ -141,6 +143,13 @@ namespace ConsoleSnake
                     Console.BackgroundColor = col;
                     Console.Write(" ");
                 }
+            }
+
+            public static void WriteText(Position pos,string text)
+            {
+                Console.SetCursorPosition(pos.x, pos.y);
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.Write(text);
             }
             /*
             public static void Line(int x, int y)
