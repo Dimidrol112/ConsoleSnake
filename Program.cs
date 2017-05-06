@@ -94,12 +94,12 @@ namespace ConsoleSnake
             {
                 if (tail.Count != 0)
                     tail.RemoveAt(0);
-                tail.Add(position);
+                tail.Add(position.Clone());
             }
 
             public static void AddCell()
             {
-                tail.Add(prevPos);
+                tail.Add(position.Clone());
             }
 
             public static void Move()
@@ -146,6 +146,11 @@ namespace ConsoleSnake
             {
                 this.x = x;
                 this.y = y;
+            }
+
+            public Position Clone()
+            {
+                return new Position(this.x, this.y);
             }
         }
 
