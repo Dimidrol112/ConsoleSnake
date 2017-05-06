@@ -21,6 +21,7 @@ namespace ConsoleSnake
             {
                 Snake.Move();
                 Snake.Render();
+                Snake.CollisionCheck();
                 Thread.Sleep(500);
             }
 
@@ -94,7 +95,7 @@ namespace ConsoleSnake
             {
                 if (tail.Count != 0)
                     tail.RemoveAt(0);
-                tail.Add(position.Clone());
+                    tail.Add(prevPos.Clone());
             }
 
             public static void AddCell()
@@ -104,13 +105,20 @@ namespace ConsoleSnake
 
             public static void Move()
             {
-
                 prevPos.x = position.x;
                 prevPos.y = position.y;
                 position.x += dirrection.x;
                 position.y += dirrection.y;
             }
 
+            public static void CollisionCheck()
+            {
+                foreach(var cell in tail)
+                {
+                    if (cell.Equals(position))
+                        Console.WriteLine("Alert!");
+                }
+            }
         }
 
         static class Paint
@@ -151,6 +159,15 @@ namespace ConsoleSnake
             public Position Clone()
             {
                 return new Position(this.x, this.y);
+            }
+
+            public override bool Equals(object obj)
+            {
+                Position pos = (Position)obj;
+                if (x == pos.x && y == pos.y)
+                    return true;
+                else
+                    return false;
             }
         }
 
