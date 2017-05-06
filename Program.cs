@@ -116,7 +116,12 @@ namespace ConsoleSnake
                 foreach(var cell in tail)
                 {
                     if (cell.Equals(position))
-                        Console.WriteLine("Alert!");
+                    {
+                        DeRenderTail();
+                        position = new Position(5, 5);
+                        tail = new List<Position>();
+                    }
+                        
                 }
             }
         }
