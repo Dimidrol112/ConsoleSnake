@@ -33,19 +33,19 @@ namespace ConsoleSnake
                 ConsoleKeyInfo ki = Console.ReadKey(true);
                 if (ki.Key == ConsoleKey.A)
                 {
-                    Snake.dirrection.x = -1;
+                    Snake.dirrection = new Vector(-1,0);
                 }
                 if (ki.Key == ConsoleKey.D)
                 {
-                    Snake.dirrection.x = 1;
+                    Snake.dirrection = new Vector(1, 0);
                 }
                 if (ki.Key == ConsoleKey.S)
                 {
-                    Snake.dirrection.y = -1;
+                    Snake.dirrection = new Vector(0, 1);
                 }
                 if (ki.Key == ConsoleKey.W)
                 {
-                    Snake.dirrection.y = 1;
+                    Snake.dirrection = new Vector(0, -1);
                 }
                 Thread.Sleep(0100);
             }
@@ -54,7 +54,7 @@ namespace ConsoleSnake
         static class Snake
         {
             public static Position position = new Position(5,5);
-            public static Vector dirrection = new Vector(0,1);
+            public static Vector dirrection = new Vector(0,0);
             public static Position[] tail;
             public static Position prevPos = new Position(5, 5);
 
