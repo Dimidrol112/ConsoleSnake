@@ -33,7 +33,7 @@ namespace ConsoleSnake
                 ConsoleKeyInfo ki = Console.ReadKey(true);
                 if (ki.Key == ConsoleKey.A)
                 {
-                    Snake.dirrection = new Vector(-1,0);
+                    Snake.dirrection = new Vector(-1, 0);
                 }
                 if (ki.Key == ConsoleKey.D)
                 {
@@ -47,25 +47,64 @@ namespace ConsoleSnake
                 {
                     Snake.dirrection = new Vector(0, -1);
                 }
+                if (ki.Key == ConsoleKey.F)
+                {
+                    Snake.AddCell();
+                }
+
                 Thread.Sleep(0100);
             }
         }
 
         static class Snake
         {
-            public static Position position = new Position(5,5);
-            public static Vector dirrection = new Vector(0,0);
-            public static Position[] tail;
+            public static Position position = new Position(5, 5);
+            public static Vector dirrection = new Vector(1, 0);
+            public static List<Position> tail = new List<Position>();
             public static Position prevPos = new Position(5, 5);
 
             public static void Render()
             {
+                //Head
                 Paint.SetPixel(prevPos, ConsoleColor.Black);
                 Paint.SetPixel(position, ConsoleColor.Green);
+
+                DeRenderTail();
+                ShiftTail();
+                RenderTail();
+            }
+
+            static void RenderTail()
+            {
+                foreach (var cell in tail)
+                {
+                    Paint.SetPixel(cell, ConsoleColor.Green);
+                }
+            }
+
+            static void DeRenderTail()
+            {
+                foreach (var cell in tail)
+                {
+                    Paint.SetPixel(cell, ConsoleColor.Black);
+                }
+            }
+
+            static void ShiftTail()
+            {
+                if (tail.Count != 0)
+                    tail.RemoveAt(0);
+                tail.Add(position);
+            }
+
+            public static void AddCell()
+            {
+                tail.Add(prevPos);
             }
 
             public static void Move()
             {
+
                 prevPos.x = position.x;
                 prevPos.y = position.y;
                 position.x += dirrection.x;
@@ -78,7 +117,7 @@ namespace ConsoleSnake
         {
             public static void SetPixel(Position pos, ConsoleColor col)
             {
-                SetPixel(pos.x, pos.y,col);
+                SetPixel(pos.x, pos.y, col);
             }
 
             public static void SetPixel(int x, int y, ConsoleColor col)
@@ -103,7 +142,7 @@ namespace ConsoleSnake
             public int x = 0;
             public int y = 0;
 
-            public Position(int x,int y)
+            public Position(int x, int y)
             {
                 this.x = x;
                 this.y = y;
