@@ -11,12 +11,14 @@ namespace ConsoleSnake
         static bool work = true;
         private static int screenWidth = 30;
         private static int screenHeight = 30;
+        static Random rnd = new Random();
 
         static void Main(string[] args)
         {
             Thread inputThread = new Thread(Input);
             inputThread.Start();
             Paint.WriteText(new Position(0, 0), "Snake");
+            Food.Eat();
 
             while (work)
             {
@@ -56,6 +58,19 @@ namespace ConsoleSnake
                 }
 
                 Thread.Sleep(0100);
+            }
+        }
+
+        static class Food
+        {
+            public static Position position = new Position(10,10);
+
+            public static void Eat()
+            {
+                Paint.SetPixel(position, ConsoleColor.Green);
+                position.x = rnd.Next(0, screenWidth);
+                position.y = rnd.Next(0, screenHeight);
+                Paint.SetPixel(position, ConsoleColor.DarkYellow);
             }
         }
 
@@ -122,8 +137,13 @@ namespace ConsoleSnake
                         DeRenderTail();
                         position = new Position(5, 5);
                         tail = new List<Position>();
-                    }
-                        
+                    }                        
+                }
+
+                if (Food.position.Equals(position))
+                {
+                    AddCell();
+                    Food.Eat();
                 }
             }
         }
