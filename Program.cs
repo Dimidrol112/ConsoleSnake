@@ -9,12 +9,15 @@ namespace ConsoleSnake
     class Program
     {
         static bool work = true;
-        private static int screenWidth = 30;
-        private static int screenHeight = 30;
+        private static int screenWidth = 80;
+        private static int screenHeight = 25;
         static Random rnd = new Random();
 
         static void Main(string[] args)
         {
+            Console.BufferWidth = screenWidth;
+            Console.BufferHeight = screenHeight;
+
             Thread inputThread = new Thread(Input);
             inputThread.Start();
             Paint.WriteText(new Position(0, 0), "Snake");
