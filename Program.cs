@@ -9,8 +9,8 @@ namespace ConsoleSnake
     class Program
     {
         static bool work = true;
-        private static int screenWidth = 80;
-        private static int screenHeight = 25;
+        public static int screenWidth = 80;
+        public static int screenHeight = 25;
         static Random rnd = new Random();
 
         static void Main(string[] args)
@@ -66,7 +66,7 @@ namespace ConsoleSnake
 
         static class Food
         {
-            public static Position position = new Position(10,10);
+            public static Position position = new Position(10, 10);
 
             public static void Eat()
             {
@@ -115,7 +115,7 @@ namespace ConsoleSnake
             {
                 if (tail.Count != 0)
                     tail.RemoveAt(0);
-                    tail.Add(prevPos.Clone());
+                tail.Add(prevPos.Clone());
             }
 
             public static void AddCell()
@@ -133,14 +133,12 @@ namespace ConsoleSnake
 
             public static void CollisionCheck()
             {
-                foreach(var cell in tail)
+                foreach (var cell in tail)
                 {
                     if (cell.Equals(position))
                     {
-                        DeRenderTail();
-                        position = new Position(5, 5);
-                        tail = new List<Position>();
-                    }                        
+                        Die();
+                    }
                 }
 
                 if (Food.position.Equals(position))
@@ -148,76 +146,88 @@ namespace ConsoleSnake
                     AddCell();
                     Food.Eat();
                 }
+
+                if (position.x > screenWidth || position.x < 0 || position.y < 0 || position.y > screenHeight)
+                    Die();
+            }
+
+            public static void Die()
+            {
+                DeRenderTail();
+                position = new Position(5, 5);
+                tail = new List<Position>();
+            }
+
+        }
+    }
+
+    static class Paint
+    {
+        public static void SetPixel(Position pos, ConsoleColor col)
+        {
+            SetPixel(pos.x, pos.y, col);
+        }
+
+        public static void SetPixel(int x, int y, ConsoleColor col)
+        {
+            if (x >= 0 && y >= 0 && x < Program.screenWidth && y < Program.screenHeight)
+            {
+                Console.SetCursorPosition(x, y);
+                Console.BackgroundColor = col;
+                Console.Write(" ");
             }
         }
 
-        static class Paint
+        public static void WriteText(Position pos, string text)
         {
-            public static void SetPixel(Position pos, ConsoleColor col)
-            {
-                SetPixel(pos.x, pos.y, col);
-            }
+            Console.SetCursorPosition(pos.x, pos.y);
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.Write(text);
+        }
+        /*
+        public static void Line(int x, int y)
+        {
+            for (int i = 0; i < Program.playerLength; i++)
+                SetPixel(x, i + y, ConsoleColor.Red);
+        }*/
+    }
 
-            public static void SetPixel(int x, int y, ConsoleColor col)
-            {
-                if (x >= 0 && y >= 0 && x < Program.screenWidth && y < Program.screenHeight)
-                {
-                    Console.SetCursorPosition(x, y);
-                    Console.BackgroundColor = col;
-                    Console.Write(" ");
-                }
-            }
+    class Position
+    {
+        public int x = 0;
+        public int y = 0;
 
-            public static void WriteText(Position pos,string text)
-            {
-                Console.SetCursorPosition(pos.x, pos.y);
-                Console.BackgroundColor = ConsoleColor.Black;
-                Console.Write(text);
-            }
-            /*
-            public static void Line(int x, int y)
-            {
-                for (int i = 0; i < Program.playerLength; i++)
-                    SetPixel(x, i + y, ConsoleColor.Red);
-            }*/
+        public Position(int x, int y)
+        {
+            this.x = x;
+            this.y = y;
         }
 
-        class Position
+        public Position Clone()
         {
-            public int x = 0;
-            public int y = 0;
-
-            public Position(int x, int y)
-            {
-                this.x = x;
-                this.y = y;
-            }
-
-            public Position Clone()
-            {
-                return new Position(this.x, this.y);
-            }
-
-            public override bool Equals(object obj)
-            {
-                Position pos = (Position)obj;
-                if (x == pos.x && y == pos.y)
-                    return true;
-                else
-                    return false;
-            }
+            return new Position(this.x, this.y);
         }
 
-        class Vector
+        public override bool Equals(object obj)
         {
-            public int x = 0;
-            public int y = 0;
+            Position pos = (Position)obj;
+            if (x == pos.x && y == pos.y)
+                return true;
+            else
+                return false;
+        }
+    }
 
-            public Vector(int x, int y)
-            {
-                this.x = x;
-                this.y = y;
-            }
+    class Vector
+    {
+        public int x = 0;
+        public int y = 0;
+
+        public Vector(int x, int y)
+        {
+            this.x = x;
+            this.y = y;
         }
     }
 }
+
