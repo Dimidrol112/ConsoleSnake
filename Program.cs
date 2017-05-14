@@ -21,7 +21,7 @@ namespace ConsoleSnake
             Thread inputThread = new Thread(Input);
             inputThread.Start();
             Paint.WriteText(new Position(0, 0), "Snake");
-            Food.Eat();
+            Food.Gen();
 
             while (work)
             {
@@ -71,6 +71,13 @@ namespace ConsoleSnake
             public static void Eat()
             {
                 Paint.SetPixel(position, ConsoleColor.Green);
+                position.x = rnd.Next(0, screenWidth);
+                position.y = rnd.Next(0, screenHeight);
+                Paint.SetPixel(position, ConsoleColor.DarkYellow);
+            }
+
+            public static void Gen()
+            {
                 position.x = rnd.Next(0, screenWidth);
                 position.y = rnd.Next(0, screenHeight);
                 Paint.SetPixel(position, ConsoleColor.DarkYellow);
